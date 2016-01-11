@@ -32,6 +32,10 @@
     <![endif]-->
 
     {% endblock head_css %}
+
+    {% block head_js %}
+
+    {% endblock head_js %}
 </head>
 
 <body>
@@ -72,11 +76,14 @@
     {% endblock content %}
 
     {% block footer_js %}
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{%static 'js/bootstrap.min.js' %}"></script>
          <!-- jQuery Version 1.11.1 -->
         <script src="{% static 'js/jquery.js' %}"></script>
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="{%static 'js/bootstrap.min.js' %}"></script>
+
     {% endblock footer_js %}
 
 
