@@ -1,15 +1,31 @@
+import datetime
+
 from django.db import models
 
 
-class Recipient(models.Model):
-    email_to = models.EmailField(null=False)
-    email = models.ForeignKey('MyEmail', on_delete=models.CASCADE) # one email can one or more recipients
-
 class Copy(models.Model):
-    copy_to = models.EmailField(null=True)
-    email = models.ForeignKey('MyEmail', on_delete=models.CASCADE) # one email can have zero or more CC
+    email_address = models.EmailField(null=True)
+
+    def __str__(self):
+        return "CC: " + self.copy_to
+
+class Recipient(models.Model):
+    email_address = models.EmailField(null=False, blank=False)
+
+    def __str__(self):
+        return "to: " + self.email_address
+
 
 class MyEmail(models.Model):
+    recipients = models.ManyToManyField('Recipient')
+    copies = models.ManyToManyField('Copy')
+
     email_subject = models.CharField(null=True, max_length=255)
     email_from = models.EmailField()
     email_body = models.TextField(null=True)
+    date = models.DateTimeField(default=datetime.datetime.now)
+
+    def __str__(self):
+        return('Subject: ' + self.email_subject + '\n' + 'From: ' + self.email_from)
+
+
