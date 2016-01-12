@@ -43,6 +43,11 @@ def login(username, password, imap_id):
 
 
 def save_email(message):
+    """
+    Saves a given email in the database
+    :param message: email message
+    :return:
+    """
     ccs = message.cc
     recipients = message.sent_to
 
@@ -74,7 +79,6 @@ class EmailThread(threading.Thread):
         self.password = password
         self.imap_id = imap_id
 
-
     def run(self):
         print("Starting thread ", self.username)
         print()
@@ -90,7 +94,7 @@ class EmailThread(threading.Thread):
         sleep_for = threading.Event()
 
         while True:
-            unread_messages = self.imbox.messages()
+            unread_messages = self.imbox.messages(unread=True)
 
             for uid, message in unread_messages:
                 if pattern.match(message.subject) and message.message_id not in already_seen:
@@ -104,12 +108,3 @@ class EmailThread(threading.Thread):
             sleep_for.wait(timeout=timeout) # sleeps for n seconds
             print("%s is waking up"%(self.username))
 
-#
-#
-# t1 = EmailThread('bcc264decom@gmail.com', 'bcc264bcc264', 1)
-# t2 = EmailThread('bcc264decom@yahoo.com', 'bcc264bcc264', 2)
-#
-# t1.start()
-# t2.start()
-#
-# print("Exiting main thread")

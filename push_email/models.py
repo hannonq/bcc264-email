@@ -26,6 +26,6 @@ class MyEmail(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
-        return('Subject: ' + self.email_subject + '\n' + 'From: ' + self.email_from)
+        return 'Subject: ' + self.email_subject + '\n' + 'From: ' + self.email_from
 
 
