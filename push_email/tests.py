@@ -20,10 +20,10 @@ class EmailTestCase(TestCase):
 
 class ThreadTestCase(TestCase):
     def test_thread(self):
-        t1 = EmailThread('bcc264decom@gmail.com', 'bcc264bcc264', 1)
+        #t1 = EmailThread('bcc264decom@gmail.com', 'bcc264bcc264', 1)
         t2 = EmailThread('bcc264decom@yahoo.com', 'bcc264bcc264', 2)
 
-        t1.start()
+        #t1.start()
         t2.start()
 
 
