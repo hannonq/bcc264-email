@@ -8,7 +8,7 @@ from email.utils import parsedate_to_datetime
 from imbox import Imbox
 import pytz
 
-from .models import MyEmail
+from .models import MyEmail, EmailId
 #from .calendarhandler import add_event
 
 
@@ -34,11 +34,11 @@ def login(username, password, imap_id):
     print("Trying to log in with ", username)
     try:
         imbox = Imbox(
-                imap[imap_id],
-                username=username,
-                password=password,
-                ssl=True
-            )
+            imap[imap_id],
+            username=username,
+            password=password,
+            ssl=True
+        )
         print("%s is logged in\n"%(username))
     except:
         print("Login failed")
@@ -103,6 +103,11 @@ def add_to_calendar(message):
     #add_event(event)
 
 
+def load_already_seen():
+    seen = EmailId.objects.all()
+    if seen:
+        for s in seen:
+            already_seen.add(s)
 
 
 class EmailThread(threading.Thread):
@@ -117,6 +122,8 @@ class EmailThread(threading.Thread):
         print("Starting thread ", self.username)
         print()
         self.imbox = login(self.username, self.password, self.imap_id)
+
+        load_already_seen()
         self.check_for_new_emails()
 
     def check_for_new_emails(self):
@@ -131,14 +138,17 @@ class EmailThread(threading.Thread):
             unread_messages = self.imbox.messages()
 
             for uid, message in unread_messages:
-               if (pattern.match(message.subject)) and message.message_id not in already_seen:
+                if (pattern.match(message.subject) or True) and message.message_id not in already_seen:
+                    EmailId.objects.create(
+                        email_id=message.message_id
+                    )
                     already_seen.add(message.message_id)  # workaround to avoid repeated emails
 
                     print("Subject: ", message.subject)
                     save_email(message)
-                    add_to_calendar(message)
+                    #add_to_calendar(message)
 
-            print("%s is going to sleep for %d seconds"%(self.username, timeout))
-            sleep_for.wait(timeout=timeout) # sleeps for n seconds
-            print("%s is waking up"%(self.username))
+        print("%s is going to sleep for %d seconds"%(self.username, timeout))
+        sleep_for.wait(timeout=timeout) # sleeps for n seconds
+        print("%s is waking up"%(self.username))
 

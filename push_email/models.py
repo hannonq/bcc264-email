@@ -29,3 +29,8 @@ class MyEmail(models.Model):
         return 'Subject: ' + self.email_subject + '\n' + 'From: ' + self.email_from
 
 
+class EmailId(models.Model):
+
+    email_id = models.TextField()
+
+

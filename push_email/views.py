@@ -24,7 +24,6 @@ class EmailLoginView(FormView):
     success_url = '/home/'
 
 
-
 class EmailView(View):
     template_name = 'emails.html'
 
@@ -38,7 +37,7 @@ class EmailView(View):
 
         t1 = EmailThread(gmail_address, gmail_pwd, 1)
         t2 = EmailThread(yahoo_address, yahoo_pwd, 2)
-        
+
         t1.start()
         t2.start()
         #sleep(2)
