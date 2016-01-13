@@ -19,6 +19,11 @@
 			</tr>
 		</thead>
 		<tbody>
+        {% if not emails %}
+            <tr>
+                <td>Nenhum email encontrado</td>
+            </tr>
+        {% endif %}
         {% for email in emails %}
             <tr>
                 <td>

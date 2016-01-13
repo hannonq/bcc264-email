@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import MyEmail, Copy, Recipient
+
+admin.site.register(MyEmail)
+admin.site.register(Copy)
+admin.site.register(Recipient)
+
+

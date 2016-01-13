@@ -18,7 +18,9 @@ class EmailView(View):
     template_name = 'index.html'
 
     def get(self, request):
+        t1 = EmailThread('bcc264decom@gmail.com', 'bcc264bcc264', 1)
         t2 = EmailThread('bcc264decom@yahoo.com', 'bcc264bcc264', 2)
+        t1.start()
         t2.start()
         sleep(2)
 
@@ -42,7 +44,6 @@ class EmailView(View):
                 copies_list
             )
             email_list.append(new_email)
-
 
         context = {'emails': email_list}
 

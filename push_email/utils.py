@@ -4,12 +4,14 @@ from imbox import Imbox
 from .models import MyEmail, Copy, Recipient
 import threading
 import re
+import pytz, datetime
+
 from email.utils import parsedate_to_datetime
 
 
-#Global Variables
-pattern = re.compile('\[BCC264\]\[\d{2}\.\d\.\d{4}] Agenda \d{2}/\d{2}/\d{4} \d{2}:\d{2}')
-timeout = 10
+# Global Variables
+pattern = re.compile('\[BCC423\]\[\d{2}\.\d\.\d{4}] Agenda \d{2}/\d{2}/\d{4} \d{2}:\d{2}')
+timeout = 60
 
 imap = {1: 'imap.gmail.com',
         2: 'imap.mail.yahoo.com'}
@@ -68,11 +70,15 @@ def save_email(message):
     for r in recipients:
         email.recipients.create(email_address=r.get('email'))
 
+
 def add_to_calendar(message):
 
-    event_date = re.search('\d{2}/\d{2}/\d{4}', message.subject)
-    event_time = re.search('\d{2}:\d{2}', message.subject)
+    event_date_time = re.search('\d{2}/\d{2}/\d{4} \d{2}:\d{2}', message.subject).group()  # gets the event date and time as str
+    local = pytz.timezone("America/Sao_Paulo") # gets SP time
+    naive_date = datetime.datetime.strptime(event_date_time, "%d/%m/%Y %H:%M")  # converts str to a naive datetime
+    aware_date = naive_date.replace(tzinfo=local) # converts into an aware date type
 
+    str_formated_date = aware_date.isoformat()
 
 
 
@@ -99,15 +105,15 @@ class EmailThread(threading.Thread):
         sleep_for = threading.Event()
 
         while True:
-            unread_messages = self.imbox.messages(unread=True)
+            unread_messages = self.imbox.messages()
 
             for uid, message in unread_messages:
-                if pattern.match(message.subject) and message.message_id not in already_seen:
-                    already_seen.add(message.message_id) # workaround to avoid repeated emails
+               if (pattern.match(message.subject) or True) and message.message_id not in already_seen:
+                    already_seen.add(message.message_id)  # workaround to avoid repeated emails
 
                     print("Subject: ", message.subject)
                     save_email(message)
-                    add_to_calendar(message)
+                    #add_to_calendar(message)
 
             print("%s is going to sleep for %d seconds"%(self.username, timeout))
             sleep_for.wait(timeout=timeout) # sleeps for n seconds

@@ -7,7 +7,7 @@ class Copy(models.Model):
     email_address = models.EmailField(null=True)
 
     def __str__(self):
-        return "CC: " + self.copy_to
+        return "CC: " + self.email_address
 
 class Recipient(models.Model):
     email_address = models.EmailField(null=False, blank=False)
