@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_js %}
+
+{% endblock head_js %}
+
+{% block content %}
+<!-- Page Content -->
+    <div id="content-table-emails">
+
+        <div id="content-renew">
+            <h3>Atualizar</h3>
+        </div>
+
+        <div id="table-emails">
+            <h3>Lista de Emails</h3>
+            <table id="tablesorter-demo" class="table table-striped"> <!--class="table table-striped"-->
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for email in emails %}
+                    <tr>
+                        <td>
+                            {{ email.email_from }}
+                        </td>
+                        <td>
+                            {{ email.email_subject }}
+                        </td>
+                        <td>
+                            {{ email.email_date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        
+
+    </div>
+
+    <div id="content-google-calendar">
+        <!--Google Calendar-->
+        <h3>Google Calendar</h3>
+    </div>
+
+{% endblock content %}
+
