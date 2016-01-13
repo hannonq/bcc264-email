@@ -1,45 +1,106 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
 {% load staticfiles %}
+<html lang="en">
+<head>
+    <title>Login</title>
+    {% block head_meta %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-{% block head_js %}
+    {%endblock head_meta%}
 
+    {% block head_css %}
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <!-- Custom CSS -->
+        <style>
+            body {
+                padding-top: 70px;
+                /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+            }
+        </style>
 
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
+    {% endblock head_css %}
 
-{% endblock head_js %}
+    {% block head_js %}
+
+    {% endblock head_js %}
+</head>
+
+<body>
+<div id="main-body">
+<!-- Page Content -->
+    <div id="content-login-email">
+        <h3>Login</h3>
+        <form action="#" method="post" name="login">
+            <div id="first-email">
+                <label>Email - 1 <br>
+                    <input type="text" style="width:100%;" name="Username1" id="UserId1">
+                </label>
+                <br>
+                <label>Senha - 1 <br>
+                    <input type="password" style="width:70%;" name="password1" id="PWD1">
+                </label>
+            </div>
+
+            <div id="second-email">
+                <label>Email - 2 <br>
+                    <input type="text" style="width:100%;" name="Username2" id="UserId2">
+                </label>
+                <br>
+                <label>Senha - 2 <br>
+                    <input type="password" style="width:70%;" name="password2" id="PWD2">
+                </label>
+            </div>
+            <input type="submit" value="Entrar" name="Login" class="but">
+        </form>
+    </div>
+
+<div id="content-body">
 
 {% block content %}
-    <!-- Page Content -->
-    <table id="tablesorter-demo" class="table table-striped">
-		<thead>
-			<tr>
-				<th>From</th>
-				<th>Subject</th>
-				<th>Date</th>
-			</tr>
-		</thead>
-		<tbody>
-        {% if not emails %}
-            <tr>
-                <td>Nenhum email encontrado</td>
-            </tr>
-        {% endif %}
-        {% for email in emails %}
-            <tr>
-                <td>
-                    {{ email.email_from }}
-                </td>
-                <td>
-                    {{ email.email_subject }}
-                </td>
-                <td>
-                    {{ email.email_date }}
-                </td>
-            </tr>
-        {% endfor %}
-		</tbody>
-	</table>
-
-
+    <!-- Insert stuff here -->
 {% endblock content %}
 
+    <!-- end tag div content-body -->
+    </div>
+<!-- end tag div main-body -->    
+</div>
+
+{% block footer_js %}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{%static 'js/bootstrap.min.js' %}"></script>
+    {% comment %}
+         <!-- jQuery Version 1.11.1 -->
+        <script src="{% static 'js/jquery.js' %}"></script>
+        {% endcomment %}
+
+    <script type="text/javascript" src="{% static 'js/jquery-latest.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.tablesorter.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            $("#tablesorter-demo").tablesorter({sortList:[[0,0],[2,1]], widgets: ['zebra']});
+            $("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+        });
+    </script>
+
+{% endblock footer_js %}
+
+
+</body>
+
+</html>
