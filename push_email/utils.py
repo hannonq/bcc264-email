@@ -9,7 +9,7 @@ from imbox import Imbox
 import pytz
 
 from .models import MyEmail
-#from .calendarhandler import add_event
+from .calendarhandler import add_event
 
 
 # Global Variables
@@ -75,6 +75,11 @@ def save_email(message):
 
 
 def add_to_calendar(message):
+    """
+    Formats an even to add it to google calendar
+    :param message: an email message
+    :return:
+    """
 
     event_date_time = re.search('\d{2}/\d{2}/\d{4} \d{2}:\d{2}', message.subject).group()  # gets the event date and time as str
     local = pytz.timezone("America/Sao_Paulo") # gets SP time
