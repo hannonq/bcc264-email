@@ -1,0 +1,101 @@
+2016-01-13T23:38:28.096358+00:00 heroku[web.1]: Starting process with command `python manage.py collectstatic --no-input; gunicorn crmapp.wsgi`
+2016-01-13T23:38:30.395897+00:00 app[web.1]: 
+2016-01-13T23:38:30.395907+00:00 app[web.1]: 0 static files copied to '/app/staticfiles', 130 unmodified.
+2016-01-13T23:38:30.684963+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [7] [INFO] Listening at: http://0.0.0.0:9762 (7)
+2016-01-13T23:38:30.684954+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [7] [INFO] Starting gunicorn 19.4.5
+2016-01-13T23:38:30.684965+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [10] [INFO] Booting worker with pid: 10
+2016-01-13T23:38:30.684964+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [7] [INFO] Using worker: sync
+2016-01-13T23:38:30.690155+00:00 app[web.1]: Traceback (most recent call last):
+2016-01-13T23:38:30.690153+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [10] [ERROR] Exception in worker process:
+2016-01-13T23:38:30.690156+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/arbiter.py", line 515, in spawn_worker
+2016-01-13T23:38:30.690157+00:00 app[web.1]:     worker.init_process()
+2016-01-13T23:38:30.690158+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 122, in init_process
+2016-01-13T23:38:30.690159+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 130, in load_wsgi
+2016-01-13T23:38:30.690162+00:00 app[web.1]:     self.callable = self.load()
+2016-01-13T23:38:30.690159+00:00 app[web.1]:     self.load_wsgi()
+2016-01-13T23:38:30.690161+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+2016-01-13T23:38:30.690160+00:00 app[web.1]:     self.wsgi = self.app.wsgi()
+2016-01-13T23:38:30.690162+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+2016-01-13T23:38:30.690163+00:00 app[web.1]:     return self.load_wsgiapp()
+2016-01-13T23:38:30.690164+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+2016-01-13T23:38:30.690164+00:00 app[web.1]:     return util.import_app(self.app_uri)
+2016-01-13T23:38:30.690165+00:00 app[web.1]:     __import__(module)
+2016-01-13T23:38:30.690165+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/util.py", line 357, in import_app
+2016-01-13T23:38:30.690166+00:00 app[web.1]: ImportError: No module named 'crmapp'
+2016-01-13T23:38:30.690167+00:00 app[web.1]: Traceback (most recent call last):
+2016-01-13T23:38:30.690167+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/arbiter.py", line 515, in spawn_worker
+2016-01-13T23:38:30.690168+00:00 app[web.1]:     worker.init_process()
+2016-01-13T23:38:30.690169+00:00 app[web.1]:     self.load_wsgi()
+2016-01-13T23:38:30.690169+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 130, in load_wsgi
+2016-01-13T23:38:30.690172+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+2016-01-13T23:38:30.690168+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 122, in init_process
+2016-01-13T23:38:30.690173+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+2016-01-13T23:38:30.690174+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/util.py", line 357, in import_app
+2016-01-13T23:38:30.690175+00:00 app[web.1]: ImportError: No module named 'crmapp'
+2016-01-13T23:38:30.690171+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+2016-01-13T23:38:30.690171+00:00 app[web.1]:     self.callable = self.load()
+2016-01-13T23:38:30.690170+00:00 app[web.1]:     self.wsgi = self.app.wsgi()
+2016-01-13T23:38:30.690172+00:00 app[web.1]:     return self.load_wsgiapp()
+2016-01-13T23:38:30.690174+00:00 app[web.1]:     return util.import_app(self.app_uri)
+2016-01-13T23:38:30.690175+00:00 app[web.1]:     __import__(module)
+2016-01-13T23:38:30.690180+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [10] [INFO] Worker exiting (pid: 10)
+2016-01-13T23:38:30.712646+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [7] [INFO] Shutting down: Master
+2016-01-13T23:38:30.712750+00:00 app[web.1]: [2016-01-13 23:38:30 +0000] [7] [INFO] Reason: Worker failed to boot.
+2016-01-13T23:38:31.444634+00:00 heroku[web.1]: Process exited with status 3
+2016-01-13T23:38:34.185318+00:00 heroku[web.1]: Starting process with command `python manage.py collectstatic --no-input; gunicorn crmapp.wsgi`
+2016-01-13T23:38:36.515659+00:00 app[web.1]: 
+2016-01-13T23:38:36.515681+00:00 app[web.1]: 0 static files copied to '/app/staticfiles', 130 unmodified.
+2016-01-13T23:38:36.941631+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [7] [INFO] Starting gunicorn 19.4.5
+2016-01-13T23:38:36.953854+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [10] [ERROR] Exception in worker process:
+2016-01-13T23:38:36.953857+00:00 app[web.1]: Traceback (most recent call last):
+2016-01-13T23:38:36.953858+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/arbiter.py", line 515, in spawn_worker
+2016-01-13T23:38:36.953859+00:00 app[web.1]:     worker.init_process()
+2016-01-13T23:38:36.953860+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 122, in init_process
+2016-01-13T23:38:36.953861+00:00 app[web.1]:     self.load_wsgi()
+2016-01-13T23:38:36.953862+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 130, in load_wsgi
+2016-01-13T23:38:36.953862+00:00 app[web.1]:     self.wsgi = self.app.wsgi()
+2016-01-13T23:38:36.953863+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+2016-01-13T23:38:36.953864+00:00 app[web.1]:     self.callable = self.load()
+2016-01-13T23:38:36.953865+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+2016-01-13T23:38:36.945327+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [7] [INFO] Listening at: http://0.0.0.0:9119 (7)
+2016-01-13T23:38:36.945469+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [7] [INFO] Using worker: sync
+2016-01-13T23:38:36.953866+00:00 app[web.1]:     return self.load_wsgiapp()
+2016-01-13T23:38:36.949648+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [10] [INFO] Booting worker with pid: 10
+2016-01-13T23:38:36.953868+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/util.py", line 357, in import_app
+2016-01-13T23:38:36.953867+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+2016-01-13T23:38:36.953868+00:00 app[web.1]:     return util.import_app(self.app_uri)
+2016-01-13T23:38:36.953869+00:00 app[web.1]:     __import__(module)
+2016-01-13T23:38:36.953870+00:00 app[web.1]: ImportError: No module named 'crmapp'
+2016-01-13T23:38:36.953870+00:00 app[web.1]: Traceback (most recent call last):
+2016-01-13T23:38:36.953871+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/arbiter.py", line 515, in spawn_worker
+2016-01-13T23:38:36.953872+00:00 app[web.1]:     worker.init_process()
+2016-01-13T23:38:36.953873+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 122, in init_process
+2016-01-13T23:38:36.953874+00:00 app[web.1]:     self.load_wsgi()
+2016-01-13T23:38:36.953876+00:00 app[web.1]:     self.wsgi = self.app.wsgi()
+2016-01-13T23:38:36.953876+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/base.py", line 67, in wsgi
+2016-01-13T23:38:36.953877+00:00 app[web.1]:     self.callable = self.load()
+2016-01-13T23:38:36.953878+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+2016-01-13T23:38:36.953875+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/workers/base.py", line 130, in load_wsgi
+2016-01-13T23:38:36.953879+00:00 app[web.1]:     return self.load_wsgiapp()
+2016-01-13T23:38:36.953879+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+2016-01-13T23:38:36.953880+00:00 app[web.1]:     return util.import_app(self.app_uri)
+2016-01-13T23:38:36.953881+00:00 app[web.1]:   File "/app/.heroku/python/lib/python3.4/site-packages/gunicorn/util.py", line 357, in import_app
+2016-01-13T23:38:36.953882+00:00 app[web.1]:     __import__(module)
+2016-01-13T23:38:36.953883+00:00 app[web.1]: ImportError: No module named 'crmapp'
+2016-01-13T23:38:36.982770+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [7] [INFO] Shutting down: Master
+2016-01-13T23:38:36.954013+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [10] [INFO] Worker exiting (pid: 10)
+2016-01-13T23:38:36.982884+00:00 app[web.1]: [2016-01-13 23:38:36 +0000] [7] [INFO] Reason: Worker failed to boot.
+2016-01-13T23:38:37.715755+00:00 heroku[web.1]: Process exited with status 3
+2016-01-13T23:38:37.727130+00:00 heroku[web.1]: State changed from starting to crashed
+2016-01-13T23:38:31.475233+00:00 heroku[web.1]: State changed from starting to crashed
+2016-01-13T23:38:31.476175+00:00 heroku[web.1]: State changed from crashed to starting
+2016-01-13T23:38:47.247411+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=serene-wildwood-6916.herokuapp.com request_id=0bf54307-e7f1-4b52-88f8-6c75301a8b16 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:38:48.564738+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=serene-wildwood-6916.herokuapp.com request_id=1ddf9188-b7ee-482b-a30d-7f91a3b73710 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:38:54.112647+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=serene-wildwood-6916.herokuapp.com request_id=26f32caf-7396-450b-a55e-ea9794a34183 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:38:54.559879+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=serene-wildwood-6916.herokuapp.com request_id=412be3fe-134b-45c0-8552-a96c8f4ffba0 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:39:03.022957+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=serene-wildwood-6916.herokuapp.com request_id=125a0479-4cde-40e6-9579-d70fcff08023 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:39:03.493573+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=serene-wildwood-6916.herokuapp.com request_id=3ae266f2-8649-4310-a644-e89e4c52161b fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:40:23.942432+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=serene-wildwood-6916.herokuapp.com request_id=1a826cd9-8bb7-4aba-9ee2-f351dfb268d3 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:40:24.482782+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=serene-wildwood-6916.herokuapp.com request_id=8203787b-1661-44ed-86ee-708169f1a019 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:42:09.095538+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=serene-wildwood-6916.herokuapp.com request_id=daf2004b-49c6-4f6d-9f94-3f936ff8c943 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
+2016-01-13T23:42:09.550009+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/favicon.ico" host=serene-wildwood-6916.herokuapp.com request_id=65b37402-eeb3-4f00-a103-b371a7cdd8b7 fwd="179.192.122.206" dyno= connect= service= status=503 bytes=
