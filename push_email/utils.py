@@ -1,12 +1,15 @@
 __author__ = 'hannon'
 
-from imbox import Imbox
-from .models import MyEmail, Copy, Recipient
 import threading
 import re
-import pytz, datetime
-
+import datetime
 from email.utils import parsedate_to_datetime
+
+from imbox import Imbox
+import pytz
+
+from .models import MyEmail
+#from .calendarhandler import add_event
 
 
 # Global Variables
@@ -80,6 +83,21 @@ def add_to_calendar(message):
 
     str_formated_date = aware_date.isoformat()
 
+    event = {
+        'description': 'BCC432 - Agenda',
+        'start': {
+            'dateTime': str_formated_date,
+            'timeZone': local,
+        },
+        'end': {
+            'dateTime': aware_date + datetime.timedelta(hours=1),
+            'timeZone': local,
+        }
+    }
+
+    #add_event(event)
+
+
 
 
 class EmailThread(threading.Thread):
@@ -108,12 +126,12 @@ class EmailThread(threading.Thread):
             unread_messages = self.imbox.messages()
 
             for uid, message in unread_messages:
-               if (pattern.match(message.subject) or True) and message.message_id not in already_seen:
+               if (pattern.match(message.subject)) and message.message_id not in already_seen:
                     already_seen.add(message.message_id)  # workaround to avoid repeated emails
 
                     print("Subject: ", message.subject)
                     save_email(message)
-                    #add_to_calendar(message)
+                    add_to_calendar(message)
 
             print("%s is going to sleep for %d seconds"%(self.username, timeout))
             sleep_for.wait(timeout=timeout) # sleeps for n seconds
