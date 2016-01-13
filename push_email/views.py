@@ -20,7 +20,7 @@ class EmailView(View):
     def get(self, request):
         t2 = EmailThread('bcc264decom@yahoo.com', 'bcc264bcc264', 2)
         t2.start()
-        sleep(5)
+        sleep(2)
 
         email_list = []
         for e in MyEmail.objects.all():

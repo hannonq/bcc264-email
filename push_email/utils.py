@@ -8,7 +8,7 @@ from email.utils import parsedate_to_datetime
 
 
 #Global Variables
-pattern = re.compile('\[BCC423\]\[\d{2}\.\d\.\d{4}] Agenda \d{2}/\d{2}/\d{4}')
+pattern = re.compile('\[BCC264\]\[\d{2}\.\d\.\d{4}] Agenda \d{2}/\d{2}/\d{4} \d{2}:\d{2}')
 timeout = 10
 
 imap = {1: 'imap.gmail.com',
@@ -69,7 +69,12 @@ def save_email(message):
         email.recipients.create(email_address=r.get('email'))
 
 def add_to_calendar(message):
-    pass
+
+    event_date = re.search('\d{2}/\d{2}/\d{4}', message.subject)
+    event_time = re.search('\d{2}:\d{2}', message.subject)
+
+
+
 
 class EmailThread(threading.Thread):
     def __init__(self, username, password, imap_id):
