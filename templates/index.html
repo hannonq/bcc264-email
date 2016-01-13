@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 {% load staticfiles %}
+
 <html lang="en">
 <head>
     <title>Login</title>
@@ -38,45 +40,67 @@
     {% endblock head_js %}
 </head>
 
-<body>
-<div id="main-body">
-<!-- Page Content -->
-    <div id="content-login-email">
-        <h3>Login</h3>
-        <form action="#" method="post" name="login">
-            <div id="first-email">
-                <label>Email - 1 <br>
-                    <input type="text" style="width:100%;" name="Username1" id="UserId1">
-                </label>
-                <br>
-                <label>Senha - 1 <br>
-                    <input type="password" style="width:70%;" name="password1" id="PWD1">
-                </label>
-            </div>
+{% block content %}
 
-            <div id="second-email">
-                <label>Email - 2 <br>
-                    <input type="text" style="width:100%;" name="Username2" id="UserId2">
-                </label>
-                <br>
-                <label>Senha - 2 <br>
-                    <input type="password" style="width:70%;" name="password2" id="PWD2">
-                </label>
+    <!-- Page Content -->
+    <div id="">
+
+        <form class="form-inline" action="/email/" method="post">{% csrf_token %}
+            <div class="container">
+                <h2 class="text-center">Login</h2>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form.email_address1.label }}
+                        {{ form.email_address1 }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form.password1.label }}
+                        {{ form.password1 }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {{ form.email_address2.label }}
+                        {{ form.email_address2 }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form.password2.label }}
+                        {{ form.password2 }}
+                    </div>
+                </div>
             </div>
-            <input type="submit" value="Entrar" name="Login" class="but">
+            <button id="login-button" name="login-button" class="btn btn-lg center-block">
+                Login
+            </button>
         </form>
     </div>
-
-<div id="content-body">
-
-{% block content %}
-    <!-- Insert stuff here -->
 {% endblock content %}
-
-    <!-- end tag div content-body -->
+<!--
+<form action="#" method="post" name="login">
+    <div id="first-email">
+        <label>Email - 1 <br>
+            <input type="text" style="width:100%;" name="Username1" id="UserId1">
+        </label>
+        <br>
+        <label>Senha - 1 <br>
+            <input type="password" style="width:70%;" name="password1" id="PWD1">
+        </label>
     </div>
-<!-- end tag div main-body -->    
+
+    <div id="second-email">
+        <label>Email - 2 <br>
+            <input type="text" style="width:100%;" name="Username2" id="UserId2">
+        </label>
+        <br>
+        <label>Senha - 2 <br>
+            <input type="password" style="width:70%;" name="password2" id="PWD2">
+        </label>
+    </div>
+    <input type="submit" value="Entrar" name="Login" class="but">
+</form>
+-->
 </div>
+
 
 {% block footer_js %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

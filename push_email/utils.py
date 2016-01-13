@@ -9,7 +9,7 @@ from imbox import Imbox
 import pytz
 
 from .models import MyEmail
-from .calendarhandler import add_event
+#from .calendarhandler import add_event
 
 
 # Global Variables

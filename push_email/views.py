@@ -4,6 +4,9 @@ from django.template import RequestContext
 from .utils import EmailThread
 from .models import MyEmail
 from time import sleep
+from django.views.generic.edit import FormView
+from .forms import LoginForm
+
 
 class FullEmail:
     def __init__(self, email_subject=None, email_from=None, email_body=None, email_date=None, recipients=None, copies=None):
@@ -14,15 +17,31 @@ class FullEmail:
         self.recipients = []
         self.copies = []
 
-class EmailView(View):
-    template_name = 'index.html'
 
-    def get(self, request):
-        t1 = EmailThread('bcc264decom@gmail.com', 'bcc264bcc264', 1)
-        t2 = EmailThread('bcc264decom@yahoo.com', 'bcc264bcc264', 2)
+class EmailLoginView(FormView):
+    template_name = 'index.html'
+    form_class = LoginForm
+    success_url = '/home/'
+
+
+
+class EmailView(View):
+    template_name = 'emails.html'
+
+    def post(self, request):
+
+        gmail_address = request.POST['email_address1']
+        gmail_pwd = request.POST['password1']
+
+        yahoo_address = request.POST['email_address2']
+        yahoo_pwd = request.POST['password2']
+
+        t1 = EmailThread(gmail_address, gmail_pwd, 1)
+        t2 = EmailThread(yahoo_address, yahoo_pwd, 2)
+        
         t1.start()
         t2.start()
-        sleep(2)
+        #sleep(2)
 
         email_list = []
         for e in MyEmail.objects.all():
