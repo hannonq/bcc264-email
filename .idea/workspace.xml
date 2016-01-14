@@ -39,18 +39,21 @@
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="51" selection-start-line="51" selection-start-column="51" selection-end-line="51" selection-end-column="51" />
+              <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="emails.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="emails.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/emails.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
-              <folding />
+            <state vertical-scroll-proportion="0.80544746">
+              <caret line="232" column="202" selection-start-line="232" selection-start-column="202" selection-end-line="232" selection-end-column="202" />
+              <folding>
+                <element signature="n#style#0;n#iframe#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#pre#0;n#div#1;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,7 +64,7 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1452731156737" expanded="true" signature="346:371" placeholder="{...}" />
+                <marker date="1452793428790" expanded="true" signature="346:371" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -89,10 +92,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/push_email/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36823106">
+            <state vertical-scroll-proportion="0.0">
               <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
@@ -156,12 +159,12 @@
         <option value="$PROJECT_DIR$/tpemail/urls.py" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/push_email/forms.py" />
-        <option value="$PROJECT_DIR$/templates/emails.html" />
         <option value="$PROJECT_DIR$/tpemail/settings.py" />
         <option value="$PROJECT_DIR$/push_email/calendarhandler.py" />
         <option value="$PROJECT_DIR$/push_email/models.py" />
         <option value="$PROJECT_DIR$/push_email/utils.py" />
         <option value="$PROJECT_DIR$/push_email/views.py" />
+        <option value="$PROJECT_DIR$/templates/emails.html" />
       </list>
     </option>
   </component>
@@ -948,7 +951,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1452731156737" expanded="true" signature="346:371" placeholder="{...}" />
+            <marker date="1452793428790" expanded="true" signature="346:371" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -972,15 +975,7 @@
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="51" selection-start-line="51" selection-start-column="51" selection-end-line="51" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/emails.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+          <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1025,10 +1020,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/push_email/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36823106">
+        <state vertical-scroll-proportion="0.0">
           <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/emails.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.80544746">
+          <caret line="232" column="202" selection-start-line="232" selection-start-column="202" selection-end-line="232" selection-end-column="202" />
+          <folding>
+            <element signature="n#style#0;n#iframe#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#pre#0;n#div#1;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

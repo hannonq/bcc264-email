@@ -57,7 +57,7 @@
        * once client library is loaded.
        */
       function loadCalendarApi() {
-        gapi.client.load('calendar', 'v3', listUpcomingEvents);
+        //gapi.client.load('calendar', 'v3', listUpcomingEvents);
         //carrega gapi para a função addEvents
         gapi.client.load('calendar', 'v3', addEvents);
       }
@@ -126,7 +126,7 @@
         };
 
         var request = gapi.client.calendar.events.insert({
-          'calendarId': 'primary',
+          'calendarId': 'bcc264decom@gmail.com',
           'resource': event
         });
 
@@ -228,6 +228,9 @@
           <button id="authorize-button" onclick="handleAuthClick(event)">
             Authorize
           </button>
+        </div>
+        <div>
+            <iframe src="https://calendar.google.com/calendar/embed?src=bcc264decom%40gmail.com&ctz=America/Sao_Paulo" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
         </div>
         <pre id="output" style="margin:0px 20px 10px 0px;"></pre>
     </div>

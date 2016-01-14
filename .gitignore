@@ -21,6 +21,7 @@ sftp-config.json
 *.iml
 
 ## Directory-based project format:
+.idea/*
 .idea/
 
 
@@ -34,3 +35,6 @@ sftp-config.json
 
 # JIRA plugin
 atlassian-ide-plugin.xml
+
+__pycache__/
+*.py[cod]
