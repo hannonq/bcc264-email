@@ -111,8 +111,10 @@
 
 #content-google-calendar{
 	width: 100%;
-	height: 200px;
+	min-height: 200px;
+	max-height: 400px;
 	padding-left: 15pt;
+	overflow:auto;
 }
 
 
