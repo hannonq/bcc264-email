@@ -20,7 +20,7 @@
 
 #content-login-email{
 	width: 50%;
-	height: 250px;
+	height: 270px;
 	display: inline-block;
 	text-align: center;
 	float: left;
@@ -44,10 +44,8 @@
 	padding: 10px 20px;
 	text-decoration: none;
 	box-sizing: border-box;
-	font-family: Helvetica, Arial, sans-serif;
-	font-size: 14px;
 	border: 0px;
-	margin-top: 10pt;
+	margin-bottom: 15pt;
 	margin-left: 45%;
 
 	-moz-border-radius:7px;
@@ -61,6 +59,7 @@
 }
 
 #first-email{
+	background-color: green;
 	width: 30%;
 	float: left;
 	margin: 0pt 0pt 0pt 20%;
@@ -76,6 +75,7 @@
 }
 
 #second-email{
+	background-color: blue;
 	width: 30%;
 	float: right;
 	margin: 0pt 20% 0pt 0pt ;
@@ -94,20 +94,19 @@
 	display: inline-block;
 	width: 100%;
 	margin-bottom: 16pt;
-	padding-left: 15pt;
+	padding: 15pt;
+
 }
 
 #table-emails{
 	display: inline-block;
-	width: 85%;
-}
+	width: 100%;
+	overflow:auto;
+	max-height: 300pt;
 
-#content-renew{
-	display: inline-block;
-	float: left;
-	width: 15%;
-	height: 100%;
-	padding-left: 15pt;
+	-moz-border-radius:7px;
+	-webkit-border-radius:7px;
+ 	border-radius: 5px 5px 5px 5px;
 }
 
 #content-google-calendar{
