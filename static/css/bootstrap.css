@@ -4984,6 +4984,7 @@ a.badge:focus {
   border-radius: 6px;
 }
 .jumbotron .container {
+  position: absolute;
   max-width: 100%;
 }
 @media screen and (min-width: 768px) {
