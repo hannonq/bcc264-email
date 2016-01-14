@@ -9,7 +9,7 @@ from imbox import Imbox
 import pytz
 
 from .models import MyEmail, EmailId
-from .calendarhandler import add_event
+#from .calendarhandler import add_event
 
 
 # Global Variables
@@ -81,26 +81,54 @@ def add_to_calendar(message):
     :return:
     """
 
-    event_date_time = re.search('\d{2}/\d{2}/\d{4} \d{2}:\d{2}', message.subject).group()  # gets the event date and time as str
-    local = pytz.timezone("America/Sao_Paulo") # gets SP time
-    naive_date = datetime.datetime.strptime(event_date_time, "%d/%m/%Y %H:%M")  # converts str to a naive datetime
-    aware_date = naive_date.replace(tzinfo=local) # converts into an aware date type
-
-    str_formated_date = aware_date.isoformat()
+    # event_date_time = re.search('\d{2}/\d{2}/\d{4} \d{2}:\d{2}', message.subject).group()  # gets the event date and time as str
+    # local = pytz.timezone("America/Sao_Paulo") # gets SP time
+    # naive_date = datetime.datetime.strptime(event_date_time, "%d/%m/%Y %H:%M")  # converts str to a naive datetime
+    # aware_date = naive_date.replace(tzinfo=local) # converts into an aware date type
+    #
+    # str_formated_date = aware_date.isoformat()
+    #
+    # event = {
+    #     'description': 'BCC432 - Agenda',
+    #     'start': {
+    #         'dateTime': str_formated_date,
+    #         'timeZone': local,
+    #     },
+    #     'end': {
+    #         'dateTime': aware_date + datetime.timedelta(hours=1),
+    #         'timeZone': local,
+    #     }
+    # }
 
     event = {
-        'description': 'BCC432 - Agenda',
-        'start': {
-            'dateTime': str_formated_date,
-            'timeZone': local,
-        },
-        'end': {
-            'dateTime': aware_date + datetime.timedelta(hours=1),
-            'timeZone': local,
-        }
+      'summary': 'Google I/O 2015',
+      'location': '800 Howard St., San Francisco, CA 94103',
+      'description': 'A chance to hear more about Google\'s developer products.',
+      'start': {
+        'dateTime': '2015-05-28T09:00:00-07:00',
+        'timeZone': 'America/Los_Angeles',
+      },
+      'end': {
+        'dateTime': '2015-05-28T17:00:00-07:00',
+        'timeZone': 'America/Los_Angeles',
+      },
+      'recurrence': [
+        'RRULE:FREQ=DAILY;COUNT=2'
+      ],
+      'attendees': [
+        {'email': 'lpage@example.com'},
+        {'email': 'sbrin@example.com'},
+      ],
+      'reminders': {
+        'useDefault': False,
+        'overrides': [
+          {'method': 'email', 'minutes': 24 * 60},
+          {'method': 'popup', 'minutes': 10},
+        ],
+      },
     }
 
-    add_event(event)
+    #add_event(event)
 
 
 def load_already_seen():
@@ -146,7 +174,7 @@ class EmailThread(threading.Thread):
 
                     print("Subject: ", message.subject)
                     save_email(message)
-                    add_to_calendar(message)
+                    #add_to_calendar(message)
 
         print("%s is going to sleep for %d seconds"%(self.username, timeout))
         sleep_for.wait(timeout=timeout) # sleeps for n seconds
