@@ -9,7 +9,7 @@ from imbox import Imbox
 import pytz
 
 from .models import MyEmail, EmailId
-#from .calendarhandler import add_event
+from .calendarhandler import add_event
 
 
 # Global Variables
@@ -100,7 +100,7 @@ def add_to_calendar(message):
         }
     }
 
-    #add_event(event)
+    add_event(event)
 
 
 def load_already_seen():
@@ -138,7 +138,7 @@ class EmailThread(threading.Thread):
             unread_messages = self.imbox.messages()
 
             for uid, message in unread_messages:
-                if (pattern.match(message.subject) or True) and message.message_id not in already_seen:
+                if (pattern.match(message.subject) ) and message.message_id not in already_seen:
                     EmailId.objects.create(
                         email_id=message.message_id
                     )
@@ -146,7 +146,7 @@ class EmailThread(threading.Thread):
 
                     print("Subject: ", message.subject)
                     save_email(message)
-                    #add_to_calendar(message)
+                    add_to_calendar(message)
 
         print("%s is going to sleep for %d seconds"%(self.username, timeout))
         sleep_for.wait(timeout=timeout) # sleeps for n seconds
