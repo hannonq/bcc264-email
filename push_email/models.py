@@ -4,12 +4,18 @@ from django.db import models
 
 
 class Copy(models.Model):
+    """
+    Creates a "copy" table
+    """
     email_address = models.EmailField(null=True)
 
     def __str__(self):
         return "CC: " + self.email_address
 
 class Recipient(models.Model):
+    """
+    Creates a "recipient" table
+    """
     email_address = models.EmailField(null=False, blank=False)
 
     def __str__(self):
@@ -17,6 +23,9 @@ class Recipient(models.Model):
 
 
 class MyEmail(models.Model):
+    """
+    Email object to save all useful email information
+    """
     recipients = models.ManyToManyField('Recipient')
     copies = models.ManyToManyField('Copy')
 
@@ -30,6 +39,9 @@ class MyEmail(models.Model):
 
 
 class EmailId(models.Model):
+    """
+    A unique email ID
+    """
 
     email_id = models.TextField()
 

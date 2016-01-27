@@ -7,6 +7,7 @@
       // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
       var CLIENT_ID = '313681686560-ard3f5v0st7f0dt3f6uqtd0bing12155.apps.googleusercontent.com';
+        //var CLIENT_ID = '313681686560-al74hpii1jqci7h2orfc4ptv1euntth7.apps.googleusercontent.com';
 
       var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
 
@@ -126,7 +127,7 @@
         };
 
         var request = gapi.client.calendar.events.insert({
-          'calendarId': 'bcc264decom@gmail.com',
+          'calendarId': 'primary',
           'resource': event
         });
 
@@ -186,7 +187,7 @@
 {% block content %}
 <!-- Page Content -->
     <div id="content-table-emails">
-        <h3>Lista de Emails <span class="but btn btn-lg center-block" style="float:right;" onClick='parent.location="javascript:location.reload()"'>Atualizar</span></h3>
+        <h3>Lista de Emails <span class="but btn btn-lg center-block" style="float:right;" onClick='parent.location="javascript:location.reload()"'>Refresh</span></h3>
         <div id="table-emails">
             <table id="tablesorter-demo" class="table table-striped" > 
                 <thead>

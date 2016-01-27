@@ -7,6 +7,8 @@ import oauth2client
 from oauth2client import client
 from oauth2client import tools
 
+import sys
+import ast
 
 try:
     import argparse
@@ -47,7 +49,9 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def add_event(event):
+
+def main():
+    print("Mainnnnnnnnnnnnnnnnnnnnnnnn  ")
     """Shows basic usage of the Google Calendar API.
 
     Creates a Google Calendar API service object and outputs a list of the next
@@ -57,9 +61,17 @@ def add_event(event):
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
 
-    print("Adding to calendar")
+    print("Aqui")
+    event = ast.literal_eval(sys.argv[1])
+
+    print("Addddddddddddddddddddddddddddddddding to calendar:")
+    print(event)
 
 
     event = service.events().insert(calendarId='bcc264@gmail.com', body=event).execute()
     print('Event created: %s' % (event.get('htmlLink')))
 
+    return True
+
+if __name__ == '__main__':
+    main()

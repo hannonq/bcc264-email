@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This file should be called scribe.sty
+%
+% Your main LaTeX file should look like this:
+%
+%   \documentclass[12pt]{article}
+%   \usepackage{scribe}
+%
+%   \Scribe{YOUR NAME}
+%   \Lecturer{Atri Rudra}
+%   \LectureNumber{N}
+%   \LectureDate{DATE}
+%   \LectureTitle{A TITLE FOR THE LECTURE}
+%
+%   \begin{document}
+%   \MakeScribeTop
+%
+%   \section{SECTION NAME}
+%
+%   NOTES GO HERE
+%
+%   \section{ANOTHER SECTION NAME}
+%
+%   MORE NOTES GO HERE
+%
+%   etc.
+%
+%   \end{document}
+%
+%
+%
+% There are some environments and macros you might use below...
+
+
+% \oddsidemargin 0in \evensidemargin 0in \marginparwidth 40pt
+% \marginparsep 10pt \topmargin 0pt \headsep 0in \headheight 0in
+% \textheight 8.5in \textwidth 6.5in \brokenpenalty=10000
+
+\usepackage{amssymb} \usepackage{amsfonts} \usepackage{amsmath} \usepackage{latexsym} \usepackage{amsthm} \usepackage{times} \usepackage{hyperref}
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{times}
+\usepackage{pifont}
+\usepackage{xspace}
+\usepackage{afterpage}
+%\usepackage{pstricks,pst-node,pst-text,pst-3d}
+\usepackage[left=3cm,top=3cm,right=3cm,bottom=2cm]{geometry}      % Configura os espa\c{c}amentos da p\'{a}gina
+\usepackage{graphicx}
+\usepackage{enumerate}
+
+
+\setlength{\parindent}{0pt}
+
+\renewcommand{\familydefault}{phv} %OK
+
+
+\newtheorem{teorema}{Teorema}
+\newtheorem{proposicao}[teorema]{Proposição}
+\newtheorem{lema}[teorema]{Lema}
+\newtheorem{fato}[teorema]{Fato}
+\newtheorem{definicao}[teorema]{Definição}
+\newtheorem{corolario}[teorema]{Corolário}
+\newtheorem{observacao}[teorema]{Observação}
+\newtheorem{exemplo}[teorema]{Exemplo}
+\newtheorem{conjetura}[teorema]{Conjetura}
+\newtheorem{exercicio}[teorema]{Exercício}
+
+
+
+\newcommand{\ignore}[1]{}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}}
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}}
+\newcommand{\RR}{\ensuremath{\mathbb{R}}}
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}}
+
+% \newcommand{\exercicio}{\textsc{Exercício}:~}
+% \newcommand{\exerrosen}[2]{\textsc{Exercício}~\textit{(Rosen, ex. #1 na pg. #2)}:~}
+% \newcommand{\resposta}{\textsc{\\Resposta}:~}
+
+
+
+% \newcommand{\bits}{\{0,1\}}
+% \newcommand{\eps}{\varepsilon}
+% \renewcommand{\epsilon}{\varepsilon}
+
+
+\def\ScribeStr{??}
+\def\LecStr{??}
+\def\LecNum{??}
+\def\LecTitle{??}
+\def\LecDate{??}
+\def\DiscStr{??}
+\def\PerStr{??}
+\newcommand{\Scribe}[1]{\def\ScribeStr{Aluno: #1}}
+\newcommand{\Scribes}[1]{\def\ScribeStr{Alunos: #1}}
+\newcommand{\Lecturer}[1]{\def\LecStr{Professor: #1}}
+\newcommand{\Lecturers}[1]{\def\LecStr{Professores: #1}}
+\newcommand{\Disciplina}[1]{\def\DiscStr{#1}}
+\newcommand{\Periodo}[1]{\def\PerStr{#1}}
+\newcommand{\LectureNumber}[1]{\def\LecNum{#1}}
+\newcommand{\LectureDate}[1]{\def\LecDate{#1}}
+\newcommand{\LectureTitle}[1]{\def\LecTitle{#1}}
+
+\newdimen\headerwidth
+
+\newcommand{\MakeScribeTop}{
+\noindent
+\begin{center}
+  \framebox{
+    \vbox{
+      \headerwidth=\textwidth
+      \advance\headerwidth by -0.22in
+      \hbox to \headerwidth {{\bf \DiscStr \hfill \PerStr} }
+      \vspace{4mm}
+      \hbox to \headerwidth {{\Large \hfill \LecNum \LecTitle \hfill}}
+      \vspace{2mm}
+      \hbox to \headerwidth {\hfill \LecDate \hfill}
+      \vspace{2mm}
+      \hbox to \headerwidth {{\it \LecStr \hfill \ScribeStr}}
+      }
+    }
+\end{center}
+\vspace*{4mm}}

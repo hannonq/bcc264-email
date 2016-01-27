@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>push_email.utils &mdash; Email Client 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Email Client 1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for push_email.utils</h1><div class="highlight"><pre>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;hannon&#39;</span>
+
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">email.utils</span> <span class="kn">import</span> <span class="n">parsedate_to_datetime</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">from</span> <span class="nn">imbox</span> <span class="kn">import</span> <span class="n">Imbox</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyEmail</span><span class="p">,</span> <span class="n">EmailId</span>
+
+
+<span class="c1"># Global Variables</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;\[BCC423\]\[\d{2}\.\d\.\d{4}] Agenda \d{2}/\d{2}/\d{4} \d{2}:\d{2}&#39;</span><span class="p">)</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="n">imap</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;imap.gmail.com&#39;</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;imap.mail.yahoo.com&#39;</span><span class="p">}</span>
+
+<span class="n">already_seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../../push_email.html#push_email.utils.login">[docs]</a><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">imap_id</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tries to log in and return the imbox object</span>
+<span class="sd">    :param username:</span>
+<span class="sd">    :param password:</span>
+<span class="sd">    :param imap_id:</span>
+<span class="sd">    :return: imbox</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Trying to log in with &quot;</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">imbox</span> <span class="o">=</span> <span class="n">Imbox</span><span class="p">(</span>
+            <span class="n">imap</span><span class="p">[</span><span class="n">imap_id</span><span class="p">],</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+            <span class="n">ssl</span><span class="o">=</span><span class="bp">True</span>
+        <span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is logged in</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">username</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Login failed&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">return</span> <span class="n">imbox</span></div>
+
+
+<div class="viewcode-block" id="save_email"><a class="viewcode-back" href="../../push_email.html#push_email.utils.save_email">[docs]</a><span class="k">def</span> <span class="nf">save_email</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves a given email in the database</span>
+<span class="sd">    :param message: email message</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ccs</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">cc</span>
+    <span class="n">recipients</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">sent_to</span>
+
+    <span class="n">parsed_date</span> <span class="o">=</span> <span class="n">parsedate_to_datetime</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">MyEmail</span><span class="p">(</span>
+        <span class="n">email_subject</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
+        <span class="n">email_from</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">sent_from</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+        <span class="n">email_body</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plain&#39;</span><span class="p">),</span>
+        <span class="n">date</span><span class="o">=</span><span class="n">parsed_date</span>
+    <span class="p">)</span>
+
+    <span class="n">email</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ccs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">ccs</span><span class="p">:</span>
+            <span class="n">email</span><span class="o">.</span><span class="n">copies</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="n">cc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">recipients</span><span class="p">:</span>
+        <span class="n">email</span><span class="o">.</span><span class="n">recipients</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">email_address</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="add_to_calendar"><a class="viewcode-back" href="../../push_email.html#push_email.utils.add_to_calendar">[docs]</a><span class="k">def</span> <span class="nf">add_to_calendar</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Formats an even to add it to google calendar</span>
+<span class="sd">    :param message: an email message</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># event_date_time = re.search(&#39;\d{2}/\d{2}/\d{4} \d{2}:\d{2}&#39;, message.subject).group()  # gets the event date and time as str</span>
+    <span class="c1"># local = pytz.timezone(&quot;America/Sao_Paulo&quot;) # gets SP time</span>
+    <span class="c1"># naive_date = datetime.datetime.strptime(event_date_time, &quot;%d/%m/%Y %H:%M&quot;)  # converts str to a naive datetime</span>
+    <span class="c1"># aware_date = naive_date.replace(tzinfo=local) # converts into an aware date type</span>
+    <span class="c1">#</span>
+    <span class="c1"># str_formated_date = aware_date.isoformat()</span>
+    <span class="c1">#</span>
+    <span class="c1"># event = {</span>
+    <span class="c1">#     &#39;description&#39;: &#39;BCC432 - Agenda&#39;,</span>
+    <span class="c1">#     &#39;start&#39;: {</span>
+    <span class="c1">#         &#39;dateTime&#39;: str_formated_date,</span>
+    <span class="c1">#         &#39;timeZone&#39;: local,</span>
+    <span class="c1">#     },</span>
+    <span class="c1">#     &#39;end&#39;: {</span>
+    <span class="c1">#         &#39;dateTime&#39;: aware_date + datetime.timedelta(hours=1),</span>
+    <span class="c1">#         &#39;timeZone&#39;: local,</span>
+    <span class="c1">#     }</span>
+    <span class="c1"># }</span>
+
+    <span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;dateTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2015-05-28T09:00:00-07:00&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;timeZone&#39;</span><span class="p">:</span> <span class="s1">&#39;America/Los_Angeles&#39;</span><span class="p">,</span>
+      <span class="p">},</span>
+      <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;dateTime&#39;</span><span class="p">:</span> <span class="s1">&#39;2015-05-28T17:00:00-07:00&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;timeZone&#39;</span><span class="p">:</span> <span class="s1">&#39;America/Los_Angeles&#39;</span><span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">}</span></div>
+
+
+
+
+<div class="viewcode-block" id="load_already_seen"><a class="viewcode-back" href="../../push_email.html#push_email.utils.load_already_seen">[docs]</a><span class="k">def</span> <span class="nf">load_already_seen</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads messages that have already been seen in previous runs of this</span>
+<span class="sd">    code so that they don&#39;t appear as duplicate in the view for the user</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="n">EmailId</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Number of already seen emails &quot;</span><span class="p">,</span> <span class="n">seen</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">seen</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">already_seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">email_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EmailThread"><a class="viewcode-back" href="../../push_email.html#push_email.utils.EmailThread">[docs]</a><span class="k">class</span> <span class="nc">EmailThread</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">imap_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        EmailThread constructor.</span>
+<span class="sd">        :param username: username to log in the email account</span>
+<span class="sd">        :param password: password for the given account</span>
+<span class="sd">        :param imap_id: an ID to identify which imap code to use: 1 = gmail, 2 = yahoo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imap_id</span> <span class="o">=</span> <span class="n">imap_id</span>
+
+<div class="viewcode-block" id="EmailThread.run"><a class="viewcode-back" href="../../push_email.html#push_email.utils.EmailThread.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Runs this thread</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Starting thread &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imbox</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imap_id</span><span class="p">)</span>
+
+        <span class="c1">#load_already_seen()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_for_new_emails</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="EmailThread.check_for_new_emails"><a class="viewcode-back" href="../../push_email.html#push_email.utils.EmailThread.check_for_new_emails">[docs]</a>    <span class="k">def</span> <span class="nf">check_for_new_emails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks for new emails that match the pattern &quot;[BBC423][xx.x.xxxx] Agenda dd/mm/aaaa hh:mm&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Checking for new emails on &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">sleep_for</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">unread_messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imbox</span><span class="o">.</span><span class="n">messages</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">uid</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">unread_messages</span><span class="p">:</span>
+                <span class="k">if</span>  <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span> <span class="ow">and</span> <span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">already_seen</span><span class="p">:</span>
+                    <span class="n">EmailId</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                        <span class="n">email_id</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span>
+                    <span class="p">)</span>
+                    <span class="n">already_seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span><span class="p">)</span>  <span class="c1"># workaround to avoid repeated emails</span>
+
+                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Subject: &quot;</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
+                    <span class="n">save_email</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="n">add_to_calendar</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is going to sleep for </span><span class="si">%d</span><span class="s2"> seconds&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">timeout</span><span class="p">))</span>
+        <span class="n">sleep_for</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span> <span class="c1"># sleeps for n seconds</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is waking up&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">))</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Hannon, Marcos Vinícius.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

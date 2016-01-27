@@ -1,0 +1,140 @@
+\documentclass[10pt]{article}
+\usepackage{scribe-md1}
+\usepackage[usenames]{color}
+\usepackage{multirow}
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+\usepackage{caption}
+
+
+\Scribes{Hannon Queiroz, Marcos Vinícius}
+\Lecturer{Carlos Frederico}
+\LectureNumber{Email client - } %% vazio
+\LectureDate{\today} % deixar vazio se não se refere a uma aula particular
+\LectureTitle{Sistemas Operacionais} % ajustar para outros trabalhos
+\Disciplina{BCC264}
+\Periodo{2015/2}
+
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+%postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
+\begin{document}
+\MakeScribeTop
+
+Neste trabalho, foi implementado um sistema \textit{web} capaz de ler \textit{emails} de duas contas: uma do provedor \textit{gmail} e outra do \textit{yahoo}. 
+Para realizar tal tarefa, o \textit{framework web Django} foi utilizado, a fim de reduzir o trabalho necessário para atender os requisitos de uma aplicação \textit{web}.\\
+
+\section{Implementação}
+Ambas as contas de \textit{email} são verificadas simultaneamente. Para isso, foi utilizada a biblioteca \textit{\textbf{threading}}, da biblioteca padrão da linguagem de programação \textit{Python}.
+
+A \textit{thread} foi implementada da seguinte forma:
+
+\begin{python}[breaklines=true]
+class EmailThread(threading.Thread):
+    def __init__(self, username, password, imap_id):
+        """
+        EmailThread constructor.
+        :param username: username to log in the email account
+        :param password: password for the given account
+        :param imap_id: an ID to identify which imap code to use: 1 = gmail, 2 = yahoo
+        """
+        threading.Thread.__init__(self)
+
+        self.username = username
+        self.password = password
+        self.imap_id = imap_id
+
+    def run(self):
+        """
+        Runs this thread
+        """
+
+        print("Starting thread ", self.username)
+        print()
+        self.imbox = login(self.username, self.password, self.imap_id)
+
+        load_already_seen()  # Loads messages that have already been seen in previous runs of this code so that they don't appear as duplicate in the view for the user
+        self.check_for_new_emails()
+
+    def check_for_new_emails(self):
+        """
+        Checks for new emails that match the pattern "[BBC423][xx.x.xxxx] Agenda dd/mm/aaaa hh:mm"
+        """
+        print("Checking for new emails on ", self.username)
+        sleep_for = threading.Event()
+
+        while True:
+            unread_messages = self.imbox.messages()
+
+            for uid, message in unread_messages:
+                if  pattern.match(message.subject) and message.message_id not in already_seen:
+                    EmailId.objects.create(
+                        email_id=message.message_id
+                    )
+                    already_seen.add(message.message_id)  # workaround to avoid repeated emails
+
+                    print("Subject: ", message.subject)
+                    save_email(message)
+                    add_to_calendar(message)
+
+        print("%s is going to sleep for %d seconds"%(self.username, timeout))
+        sleep_for.wait(timeout=timeout) # sleeps for n seconds
+        print("%s is waking up"%(self.username))
+\end{python}
+
+Quando o usuário loga com as duas contas de \textit{email}, duas instâncias da \textit{thread} mostrada no código anterior são criadas.
+
+\section{Condição de corrida}
+Na implementação deste trabalho, não foram tratados casos onde condições de corrida possam ocorrer. O motivo para a não observação destes casos é que, apesar de teoricamente possíveis, condições de corrida são \textbf{extremamente} improváveis dadas as características da \textit{Internet}. Considere o seguinte cenário onde poderia haver condição de corrida:
+\begin{enumerate}
+ \item O email do Gmail recebe uma mensagem agendando um compromisso para o dia 30/01/2016 às 10:00.
+ \item O email do Yahoo recebe este mesmo email, com a mesma data e hora, mas para um compromisso diferente.
+ \item O cliente de email desenvolvido neste trabalho recupera os dois emails \textbf{ao mesmo tempo} e tenta adicionar os eventos no Google Calendar \textbf{ao mesmo tempo.}
+\end{enumerate}
+
+Mesmo que isso ocorresse, a própria latência da Internet faria com que cada requisição chegasse separadamente no servidor do Google Calendar, evitando que os dois eventos competissem entre si.
+
+
+
+\end{document}

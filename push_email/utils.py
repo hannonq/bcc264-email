@@ -2,14 +2,12 @@ __author__ = 'hannon'
 
 import threading
 import re
-import datetime
 from email.utils import parsedate_to_datetime
 
 from imbox import Imbox
-import pytz
 
 from .models import MyEmail, EmailId
-#from .calendarhandler import add_event
+
 
 
 # Global Variables
@@ -101,9 +99,6 @@ def add_to_calendar(message):
     # }
 
     event = {
-      'summary': 'Google I/O 2015',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'A chance to hear more about Google\'s developer products.',
       'start': {
         'dateTime': '2015-05-28T09:00:00-07:00',
         'timeZone': 'America/Los_Angeles',
@@ -112,34 +107,33 @@ def add_to_calendar(message):
         'dateTime': '2015-05-28T17:00:00-07:00',
         'timeZone': 'America/Los_Angeles',
       },
-      'recurrence': [
-        'RRULE:FREQ=DAILY;COUNT=2'
-      ],
-      'attendees': [
-        {'email': 'lpage@example.com'},
-        {'email': 'sbrin@example.com'},
-      ],
-      'reminders': {
-        'useDefault': False,
-        'overrides': [
-          {'method': 'email', 'minutes': 24 * 60},
-          {'method': 'popup', 'minutes': 10},
-        ],
-      },
     }
 
-    #add_event(event)
+
 
 
 def load_already_seen():
+    """
+    Loads messages that have already been seen in previous runs of this
+    code so that they don't appear as duplicate in the view for the user
+    :return:
+    """
     seen = EmailId.objects.all()
+    print("Number of already seen emails ", seen.count())
     if seen:
         for s in seen:
-            already_seen.add(s)
+            already_seen.add(s.email_id)
 
 
 class EmailThread(threading.Thread):
+
     def __init__(self, username, password, imap_id):
+        """
+        EmailThread constructor.
+        :param username: username to log in the email account
+        :param password: password for the given account
+        :param imap_id: an ID to identify which imap code to use: 1 = gmail, 2 = yahoo
+        """
         threading.Thread.__init__(self)
 
         self.username = username
@@ -147,17 +141,20 @@ class EmailThread(threading.Thread):
         self.imap_id = imap_id
 
     def run(self):
+        """
+        Runs this thread
+        """
+
         print("Starting thread ", self.username)
         print()
         self.imbox = login(self.username, self.password, self.imap_id)
 
-        load_already_seen()
+        #load_already_seen()
         self.check_for_new_emails()
 
     def check_for_new_emails(self):
         """
-        Checks for new emails that match the pattern
-        :return:
+        Checks for new emails that match the pattern "[BBC423][xx.x.xxxx] Agenda dd/mm/aaaa hh:mm"
         """
         print("Checking for new emails on ", self.username)
         sleep_for = threading.Event()
@@ -166,7 +163,7 @@ class EmailThread(threading.Thread):
             unread_messages = self.imbox.messages()
 
             for uid, message in unread_messages:
-                if (pattern.match(message.subject) ) and message.message_id not in already_seen:
+                if  pattern.match(message.subject) and message.message_id not in already_seen:
                     EmailId.objects.create(
                         email_id=message.message_id
                     )

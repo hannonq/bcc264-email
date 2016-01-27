@@ -1,15 +1,28 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic.edit import FormView
+
 from .utils import EmailThread
 from .models import MyEmail
-from time import sleep
-from django.views.generic.edit import FormView
 from .forms import LoginForm
 
 
 class FullEmail:
+    """
+    Creates a new Email object with all fields that will be used in the html templates
+    """
     def __init__(self, email_subject=None, email_from=None, email_body=None, email_date=None, recipients=None, copies=None):
+        """
+        Constructor for a new FullEmail object
+        :param email_subject: Subject of the message
+        :param email_from: Sender of the email
+        :param email_body: Body of the email
+        :param email_date: Date when the email was sent
+        :param recipients: List of recipients for this email
+        :param copies: List of email to whom this email will be copied
+        :return: None
+        """
         self.email_subject = email_subject
         self.email_from = email_from
         self.email_body = email_body
@@ -19,15 +32,26 @@ class FullEmail:
 
 
 class EmailLoginView(FormView):
+    """
+    Renders the login view
+    """
     template_name = 'index.html'
     form_class = LoginForm
     success_url = '/home/'
 
 
 class EmailView(View):
+    """
+    Renders the email view page
+    """
     template_name = 'emails.html'
 
     def post(self, request):
+        """
+        Gets a POST request with the login data and sends it to the backend
+        :param request: POST request from the Login view
+        :return: None
+        """
 
         gmail_address = request.POST['email_address1']
         gmail_pwd = request.POST['password1']
